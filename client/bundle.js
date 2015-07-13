@@ -28474,6 +28474,8 @@ menuTimer.addOneMinute = function () {
   }
 
   else if (this.onesOfHours < 9) {
+    this.onesOfMinutes = 0;
+    this.tensOfMinutes = 0;
     this.onesOfHours += 1;
   }
 
