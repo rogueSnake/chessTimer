@@ -4,8 +4,12 @@
     <title>chessTimer</title>
   </head>
   <body>
-    <div = ng-controller='mainController'>
-      {{message}}
+    <div = ng-controller='mainCtrl'>
+      {{startTimeHours + ":" + startTimeMinutes}}
+      <div>
+        <input type="button" ng-click="addMinute()" value="More Minutes"/>
+        <input type="button" ng-click="removeMinute()" value="Fewer Minutes"/>
+      </div>
     </div>
   <script src="bundle.js"></script>
   </body>
