@@ -1,0 +1,23 @@
+#whitePlayer {
+  display : inline-block;
+  border-style : double;
+  border-width : 5px;
+  border-color : blue;
+}
+
+#blackPlayer {
+  display : inline-block;
+  border-style : double;
+  border-width : 5px;
+  border-color : blue;
+}
+}
+
+#timeConfiguration {
+  display : inline-block;
+  color : green;
+  border-style : double;
+  border-width : 5px;
+  border-color : blue;
+}
+

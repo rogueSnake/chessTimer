@@ -1,31 +1,55 @@
-var angular = require('angular'),
-  timeManager = require('./timeManager'),
-  app = angular.module('app', []);
+var css = require('./index.css'),
+  angular = require('angular'),
+  $ = require('jquery'),
+  ourJqueryCode = require('./ourJqueryCode'),
+  timerMaker = require('./timerMaker'),
+  app = angular.module('app', []),
+  menuTimer = timerMaker.makeTimer(),
+  whiteTimer = timerMaker.makeTimer(),
+  blackTimer = timerMaker.makeTimer();
 
-playerTimer = timeManager.makePlayerTimer();
-menuTimer = timeManager.makeMenuTimer(); 
+console.log(css);
 
 app.controller('mainCtrl', ['$scope', function ($scope) {
   $scope.startTimeMinutes = 5;
   $scope.startTimeHours = 0;
   $scope.message = $scope.startTime;
-  $scope.addMinute = function () {
-    if ($scope.startTimeMinutes < 59) {$scope.startTimeMinutes += 1;}
-    else {
-      $scope.startTimeHours += 1;
-      $scope.startTimeMinutes = 0;
-    }
+  $scope.menuTime = menuTimer.getTime();
+
+  $scope.updateTime = function () {
+    $scope.menuTime = menuTimer.getTime();
+    $scope.startTimeMinutes = menuTimer.countMinutes();
+    $scope.startTimeHours = menuTimer.countHours();
   };
+
+  $scope.addHour = function () {
+    menuTimer.addHours();
+    $scope.updateTime();
+  };
+
+  $scope.addMinute = function () {
+    menuTimer.addMinutes();
+    $scope.updateTime();
+  };
+
+  $scope.addSecond = function () {
+    menuTimer.addSeconds();
+    $scope.updateTime();
+  };
+
+  $scope.removeHour = function () {
+    menuTimer.subtractHours();
+    $scope.updateTime();
+  }; 
+
   $scope.removeMinute = function () {
-
-    if ($scope.startTimeMinutes > 0){
-      $scope.startTimeMinutes -= 1;
-    }
-
-    else if ($scope.startTimeMinutes === 0 && $scope.startTimeHours > 0) {
-      $scope.startTimeHours -= 1;
-      $scope.startTimeMinutes = 59;
-    }
-  };  
+    menuTimer.subtractMinutes();
+    $scope.updateTime();
+  };
+ 
+  $scope.removeSecond = function () {
+    menuTimer.subtractSeconds();
+    $scope.updateTime();
+  }; 
 }]);
 
