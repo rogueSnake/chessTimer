@@ -37592,9 +37592,7 @@ var css = require('./index.css'),
   whiteTimer = timerMaker.makeTimer(),
   blackTimer = timerMaker.makeTimer();
 
-console.log(css);
-
-app.controller('mainCtrl', ['$scope', function ($scope) {
+var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
   $scope.startTimeMinutes = 5;
   $scope.startTimeHours = 0;
   $scope.message = $scope.startTime;
@@ -37637,9 +37635,17 @@ app.controller('mainCtrl', ['$scope', function ($scope) {
   }; 
 }]);
 
+menuController.controller('whiteCtrl', ['$scope', function ($scope) {
+  $scope.whiteTime = whiteTimer.getTime();
+}]);
+
+menuController.controller('blackCtrl', ['$scope', function ($scope) {
+  $scope.blackTime = blackTimer.getTime();
+}]);
+
 
 },{"./index.css":5,"./ourJqueryCode":6,"./timerMaker":7,"angular":2,"jquery":3}],5:[function(require,module,exports){
-var css = "#whitePlayer {\n  display: inline-block;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#blackPlayer {\n  display: inline-block;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
+var css = "#whitePlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#blackPlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#timeConfiguration {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 20%;\n  color: green;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
 },{"browserify-css":8}],6:[function(require,module,exports){
 var $ = require('jquery');
 

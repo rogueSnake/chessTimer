@@ -5,11 +5,15 @@
     <title>chessTimer</title>
   </head>
   <body>
-    <span id='whitePlayer'>
-    <input type="button" value="WHITE"/>
-    </span>
+    <div id='whitePlayer'>
+      <div ng-conroller="whiteCtrl">
+        <input type="button" value="WHITE"/>
+        {{whiteTime}}
+      </div>
+    </div>
 
-    <span id='timeConfiguration'>
+    <div id='timeConfiguration'>
+
     <div ng-controller='mainCtrl'>
 
       <div>
@@ -17,10 +21,6 @@
         <input type="button" ng-click="addMinute()" value="+m"/>
         <input type="button" ng-click="addSecond()" value="+s"/>
       </div>
-
-      <style>
-        div{font: 45px bold;}
-      </style>
 
       {{menuTime}}
 
@@ -30,12 +30,14 @@
         <input type="button" ng-click="removeSecond()" value="-s"/>
       </div>
     </div>  
-    </span>
+    </div>
 
-    <span id='blackPlayer'>
-    <input type="button" value="BLACK"/>
-    </span>
+    <div id='blackPlayer'>
+      <div ng-controller="blackCtrl">
+        {{blackTime}}
+        <input type="button" value="BLACK"/>
+      </div>
+    </div>
   <script src="bundle.js"></script>
   </body>
 </html>
-

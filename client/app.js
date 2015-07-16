@@ -8,9 +8,7 @@ var css = require('./index.css'),
   whiteTimer = timerMaker.makeTimer(),
   blackTimer = timerMaker.makeTimer();
 
-console.log(css);
-
-app.controller('mainCtrl', ['$scope', function ($scope) {
+var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
   $scope.startTimeMinutes = 5;
   $scope.startTimeHours = 0;
   $scope.message = $scope.startTime;
@@ -51,5 +49,13 @@ app.controller('mainCtrl', ['$scope', function ($scope) {
     menuTimer.subtractSeconds();
     $scope.updateTime();
   }; 
+}]);
+
+menuController.controller('whiteCtrl', ['$scope', function ($scope) {
+  $scope.whiteTime = whiteTimer.getTime();
+}]);
+
+menuController.controller('blackCtrl', ['$scope', function ($scope) {
+  $scope.blackTime = blackTimer.getTime();
 }]);
 
