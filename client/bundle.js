@@ -37654,6 +37654,9 @@ $(document).ready(function () {
 });
 
 },{"jquery":3}],7:[function(require,module,exports){
+var lowerLimit = 0,
+  upperLimit = 359999;
+
 var fillZero = function (number) {
 
   if (String(number).length < 2) {
@@ -37662,12 +37665,13 @@ var fillZero = function (number) {
   return String(number);
 };
 
-
 var makeTimer = function () {
-  var seconds = 0,
-    lowerLimit = 0,
-    upperLimit = 359999,
-    keepInLimits = function () {
+  var seconds = 0;
+
+  return {
+
+    add : function (numberOfSeconds) {
+      seconds += (numberOfSeconds || 1);
 
       if (seconds < lowerLimit) {
         seconds = lowerLimit;
@@ -37676,13 +37680,6 @@ var makeTimer = function () {
       else if (seconds > upperLimit) {
         seconds = upperLimit;
       }
-    };
-
-  return {
-
-    add : function (numberOfSeconds) {
-      seconds += (numberOfSeconds || 1);
-      keepInLimits();
     },
 
     subtract : function (numberOfSeconds) {
