@@ -2,6 +2,17 @@
   background-color : #ffcc66;
 }
 
+#timeConfiguration {
+  display : inline-block;
+  vertical-align : top;
+  font-size : 225%;
+  width : 20%;
+  color : green;
+  border-style : double;
+  border-width : 5px;
+  border-color : blue;
+}
+
 #whitePlayer {
   display : inline-block;
   vertical-align : top;
@@ -17,17 +28,6 @@
   vertical-align : top;
   font-size : 225%;
   width : 25%;
-  border-style : double;
-  border-width : 5px;
-  border-color : blue;
-}
-
-#timeConfiguration {
-  display : inline-block;
-  vertical-align : top;
-  font-size : 225%;
-  width : 20%;
-  color : green;
   border-style : double;
   border-width : 5px;
   border-color : blue;

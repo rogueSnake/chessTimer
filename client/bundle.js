@@ -37592,7 +37592,18 @@ var css = require('./index.css'),
   whiteTimer = timerMaker.makeTimer(),
   blackTimer = timerMaker.makeTimer();
 
-var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
+var appController = app.controller('appCtrl', ['$scope', function ($scope) {
+
+  $scope.$on('whiteStart', function (event) {
+    $scope.$broadcast('startGame');
+  });
+
+  $scope.$on('setPlayerTime', function (event, time) {
+    $scope.$broadcast('setTime', time);
+  });
+}]);
+
+appController.controller('mainCtrl', ['$scope', function ($scope) {
   $scope.startTimeMinutes = 5;
   $scope.startTimeHours = 0;
   $scope.message = $scope.startTime;
@@ -37605,32 +37616,32 @@ var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
   };
 
   $scope.addHour = function () {
-    menuTimer.addHours();
+    menuTimer.addHours(1);
     $scope.updateTime();
   };
 
   $scope.addMinute = function () {
-    menuTimer.addMinutes();
+    menuTimer.addMinutes(1);
     $scope.updateTime();
   };
 
   $scope.addSecond = function () {
-    menuTimer.addSeconds();
+    menuTimer.addSeconds(1);
     $scope.updateTime();
   };
 
   $scope.removeHour = function () {
-    menuTimer.subtractHours();
+    menuTimer.subtractHours(1);
     $scope.updateTime();
   }; 
 
   $scope.removeMinute = function () {
-    menuTimer.subtractMinutes();
+    menuTimer.subtractMinutes(1);
     $scope.updateTime();
   };
  
   $scope.removeSecond = function () {
-    menuTimer.subtractSeconds();
+    menuTimer.subtractSeconds(1);
     $scope.updateTime();
   }; 
 
@@ -37643,8 +37654,7 @@ var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
   };
 
   $scope.$on('startGame', function (event) {
-    console.log('Setting time!');
-    $scope.$broadcast('setTime', {
+    $scope.$emit('setPlayerTime', {
       hours : menuTimer.countHours(),
       minutes : menuTimer.countMinutes(),
       seconds : menuTimer.countSeconds()
@@ -37652,15 +37662,20 @@ var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
   });
 }]);
 
-menuController.controller('whiteCtrl', ['$scope', function ($scope) {
+appController.controller('whiteCtrl', ['$scope', function ($scope) {
   $scope.whiteTime = whiteTimer.getTime();
+
+  $scope.updateTime = function () {
+    $scope.whiteTime = whiteTimer.getTime();
+  };
 
   $scope.$on('setTime', function (event, time) {
     whiteTimer.setTime(time.hours, time.minutes, time.seconds);
+    $scope.updateTime();
   });
 
   $scope.startGame = function () {
-    $scope.$emit('startGame');
+    $scope.$emit('whiteStart');
   };
 
   $scope.endTurn = function () {
@@ -37668,11 +37683,16 @@ menuController.controller('whiteCtrl', ['$scope', function ($scope) {
   };
 }]);
 
-menuController.controller('blackCtrl', ['$scope', function ($scope) {
+appController.controller('blackCtrl', ['$scope', function ($scope) {
   $scope.blackTime = blackTimer.getTime();
+
+  $scope.updateTime = function () {
+    $scope.blackTime = blackTimer.getTime();
+  };
 
   $scope.$on('setTime', function (event, time) {
     blackTimer.setTime(time.hours, time.minutes, time.seconds);
+    $scope.updateTime();
   });
 
   $scope.endTurn = function () {
@@ -37682,13 +37702,14 @@ menuController.controller('blackCtrl', ['$scope', function ($scope) {
 
 
 },{"./index.css":5,"./ourJqueryCode":6,"./timerMaker":7,"angular":2,"jquery":3}],5:[function(require,module,exports){
-var css = "#body {\n  background-color: #ffcc66;\n}\n#whitePlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#blackPlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#timeConfiguration {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 20%;\n  color: green;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
+var css = "#body {\n  background-color: #ffcc66;\n}\n#timeConfiguration {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 20%;\n  color: green;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#whitePlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#blackPlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
 },{"browserify-css":8}],6:[function(require,module,exports){
 var $ = require('jquery');
 
 $(document).ready(function () {
   
 });
+
 
 },{"jquery":3}],7:[function(require,module,exports){
 var SECONDS_IN_A_MINUTE = 60,
@@ -37706,33 +37727,24 @@ var fillZero = function (number) {
 };
 
 var makeTimer = function () {
-  /*
-  I'm not convinced this counter should be called 'seconds'; that name causes
-  confusion with the 'countSeconds' method below. A user of this interface 
-  has every right to expect that method to return the value of this counter, 
-  but it actually returns the value of this counter that remains after counting
-  hours and minutes. The method is designed to get the number of seconds to 
-  display on a clock, not the absolute number of seconds. I would rather rename
-  this internal counter than rename the external interface, but I don't have 
-  anything better to call it. BAH. */
-  var seconds = 0;
+  var absoluteSeconds = 0;
 
   return {
 
     add : function (numberOfSeconds) {
-      seconds += (numberOfSeconds || 1);
+      absoluteSeconds += (numberOfSeconds);
 
-      if (seconds < LOWER_LIMIT) {
-        seconds = LOWER_LIMIT;
+      if (absoluteSeconds < LOWER_LIMIT) {
+        absoluteSeconds = LOWER_LIMIT;
       }
 
-      else if (seconds > UPPER_LIMIT) {
-        seconds = UPPER_LIMIT;
+      else if (absoluteSeconds > UPPER_LIMIT) {
+        absoluteSeconds = UPPER_LIMIT;
       }
     },
 
     subtract : function (numberOfSeconds) {
-      this.add(-1 * (numberOfSeconds || 1));
+      this.add(-1 * (numberOfSeconds));
     },
 
     addSeconds : function (numberOfSeconds) {
@@ -37740,11 +37752,11 @@ var makeTimer = function () {
     },
 
     addMinutes : function (numberOfMinutes) {
-      this.addSeconds((numberOfMinutes || 1) * SECONDS_IN_A_MINUTE);
+      this.addSeconds((numberOfMinutes) * SECONDS_IN_A_MINUTE);
     },
 
     addHours : function (numberOfHours) {
-      this.addMinutes((numberOfHours || 1) * MINUTES_IN_AN_HOUR);
+      this.addMinutes((numberOfHours) * MINUTES_IN_AN_HOUR);
     },
 
     subtractSeconds : function (numberOfSeconds) {
@@ -37752,25 +37764,25 @@ var makeTimer = function () {
     },
 
     subtractMinutes : function (numberOfMinutes) {
-      this.subtractSeconds((numberOfMinutes || 1) * SECONDS_IN_A_MINUTE);
+      this.subtractSeconds((numberOfMinutes) * SECONDS_IN_A_MINUTE);
     },
 
     subtractHours : function (numberOfHours) {
-      this.subtractMinutes((numberOfHours || 1) * MINUTES_IN_AN_HOUR);
+      this.subtractMinutes((numberOfHours) * MINUTES_IN_AN_HOUR);
     },
 
     countSeconds : function () {
-      return seconds - (this.countMinutes() * SECONDS_IN_A_MINUTE + 
+      return absoluteSeconds - (this.countMinutes() * SECONDS_IN_A_MINUTE + 
           this.countHours() * SECONDS_IN_AN_HOUR);
     },
 
     countMinutes : function () {
-      return Math.floor((seconds - (this.countHours() * SECONDS_IN_AN_HOUR)) /
-          SECONDS_IN_A_MINUTE);
+      return Math.floor((absoluteSeconds - (this.countHours() * 
+          SECONDS_IN_AN_HOUR)) / SECONDS_IN_A_MINUTE);
     },
 
     countHours : function () {
-      return Math.floor(seconds / SECONDS_IN_AN_HOUR);
+      return Math.floor(absoluteSeconds / SECONDS_IN_AN_HOUR);
     },
 
     getTime : function () {
@@ -37780,7 +37792,7 @@ var makeTimer = function () {
     },
 
     setTime : function (hours, minutes, seconds) {
-      seconds = 0;
+      absoluteSeconds = 0;
       this.addHours(hours);
       this.addMinutes(minutes);
       this.addSeconds(seconds);

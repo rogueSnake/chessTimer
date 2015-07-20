@@ -8,7 +8,18 @@ var css = require('./index.css'),
   whiteTimer = timerMaker.makeTimer(),
   blackTimer = timerMaker.makeTimer();
 
-var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
+var appController = app.controller('appCtrl', ['$scope', function ($scope) {
+
+  $scope.$on('whiteStart', function (event) {
+    $scope.$broadcast('startGame');
+  });
+
+  $scope.$on('setPlayerTime', function (event, time) {
+    $scope.$broadcast('setTime', time);
+  });
+}]);
+
+appController.controller('mainCtrl', ['$scope', function ($scope) {
   $scope.startTimeMinutes = 5;
   $scope.startTimeHours = 0;
   $scope.message = $scope.startTime;
@@ -21,32 +32,32 @@ var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
   };
 
   $scope.addHour = function () {
-    menuTimer.addHours();
+    menuTimer.addHours(1);
     $scope.updateTime();
   };
 
   $scope.addMinute = function () {
-    menuTimer.addMinutes();
+    menuTimer.addMinutes(1);
     $scope.updateTime();
   };
 
   $scope.addSecond = function () {
-    menuTimer.addSeconds();
+    menuTimer.addSeconds(1);
     $scope.updateTime();
   };
 
   $scope.removeHour = function () {
-    menuTimer.subtractHours();
+    menuTimer.subtractHours(1);
     $scope.updateTime();
   }; 
 
   $scope.removeMinute = function () {
-    menuTimer.subtractMinutes();
+    menuTimer.subtractMinutes(1);
     $scope.updateTime();
   };
  
   $scope.removeSecond = function () {
-    menuTimer.subtractSeconds();
+    menuTimer.subtractSeconds(1);
     $scope.updateTime();
   }; 
 
@@ -59,8 +70,7 @@ var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
   };
 
   $scope.$on('startGame', function (event) {
-    console.log('Setting time!');
-    $scope.$broadcast('setTime', {
+    $scope.$emit('setPlayerTime', {
       hours : menuTimer.countHours(),
       minutes : menuTimer.countMinutes(),
       seconds : menuTimer.countSeconds()
@@ -68,15 +78,20 @@ var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
   });
 }]);
 
-menuController.controller('whiteCtrl', ['$scope', function ($scope) {
+appController.controller('whiteCtrl', ['$scope', function ($scope) {
   $scope.whiteTime = whiteTimer.getTime();
+
+  $scope.updateTime = function () {
+    $scope.whiteTime = whiteTimer.getTime();
+  };
 
   $scope.$on('setTime', function (event, time) {
     whiteTimer.setTime(time.hours, time.minutes, time.seconds);
+    $scope.updateTime();
   });
 
   $scope.startGame = function () {
-    $scope.$emit('startGame');
+    $scope.$emit('whiteStart');
   };
 
   $scope.endTurn = function () {
@@ -84,11 +99,16 @@ menuController.controller('whiteCtrl', ['$scope', function ($scope) {
   };
 }]);
 
-menuController.controller('blackCtrl', ['$scope', function ($scope) {
+appController.controller('blackCtrl', ['$scope', function ($scope) {
   $scope.blackTime = blackTimer.getTime();
+
+  $scope.updateTime = function () {
+    $scope.blackTime = blackTimer.getTime();
+  };
 
   $scope.$on('setTime', function (event, time) {
     blackTimer.setTime(time.hours, time.minutes, time.seconds);
+    $scope.updateTime();
   });
 
   $scope.endTurn = function () {
