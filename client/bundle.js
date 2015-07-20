@@ -37654,8 +37654,11 @@ $(document).ready(function () {
 });
 
 },{"jquery":3}],7:[function(require,module,exports){
-var lowerLimit = 0,
-  upperLimit = 359999;
+var SECONDS_IN_A_MINUTE = 60,
+  MINUTES_IN_AN_HOUR = SECONDS_IN_A_MINUTE,
+  SECONDS_IN_AN_HOUR = SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR,
+  LOWER_LIMIT = 0,
+  UPPER_LIMIT = (99 * SECONDS_IN_AN_HOUR) + (59 * SECONDS_IN_A_MINUTE) + 59;
 
 var fillZero = function (number) {
 
@@ -37666,6 +37669,15 @@ var fillZero = function (number) {
 };
 
 var makeTimer = function () {
+  /*
+  I'm not convinced this counter should be called 'seconds'; that name causes
+  confusion with the 'countSeconds' method below. A user of this interface 
+  has every right to expect that method to return the value of this counter, 
+  but it actually returns the value of this counter that remains after counting
+  hours and minutes. The method is designed to get the number of seconds to 
+  display on a clock, not the absolute number of seconds. I would rather rename
+  this internal counter than rename the external interface, but I don't have 
+  anything better to call it. BAH. */
   var seconds = 0;
 
   return {
@@ -37673,12 +37685,12 @@ var makeTimer = function () {
     add : function (numberOfSeconds) {
       seconds += (numberOfSeconds || 1);
 
-      if (seconds < lowerLimit) {
-        seconds = lowerLimit;
+      if (seconds < LOWER_LIMIT) {
+        seconds = LOWER_LIMIT;
       }
 
-      else if (seconds > upperLimit) {
-        seconds = upperLimit;
+      else if (seconds > UPPER_LIMIT) {
+        seconds = UPPER_LIMIT;
       }
     },
 
@@ -37691,11 +37703,11 @@ var makeTimer = function () {
     },
 
     addMinutes : function (numberOfMinutes) {
-      this.addSeconds((numberOfMinutes || 1) * 60);
+      this.addSeconds((numberOfMinutes || 1) * SECONDS_IN_A_MINUTE);
     },
 
     addHours : function (numberOfHours) {
-      this.addMinutes((numberOfHours || 1) * 60);
+      this.addMinutes((numberOfHours || 1) * MINUTES_IN_AN_HOUR);
     },
 
     subtractSeconds : function (numberOfSeconds) {
@@ -37703,24 +37715,25 @@ var makeTimer = function () {
     },
 
     subtractMinutes : function (numberOfMinutes) {
-      this.subtractSeconds((numberOfMinutes || 1) * 60);
+      this.subtractSeconds((numberOfMinutes || 1) * SECONDS_IN_A_MINUTE);
     },
 
     subtractHours : function (numberOfHours) {
-      this.subtractMinutes((numberOfHours || 1) * 60);
+      this.subtractMinutes((numberOfHours || 1) * MINUTES_IN_AN_HOUR);
     },
 
     countSeconds : function () {
-      return seconds - (this.countMinutes() * 60 + 
-          this.countHours() * 60 * 60);
+      return seconds - (this.countMinutes() * SECONDS_IN_A_MINUTE + 
+          this.countHours() * SECONDS_IN_AN_HOUR);
     },
 
     countMinutes : function () {
-      return Math.floor((seconds - (this.countHours() * 60 * 60)) / 60);
+      return Math.floor((seconds - (this.countHours() * SECONDS_IN_AN_HOUR)) /
+          SECONDS_IN_A_MINUTE);
     },
 
     countHours : function () {
-      return Math.floor(seconds / 60 / 60);
+      return Math.floor(seconds / SECONDS_IN_AN_HOUR);
     },
 
     getTime : function () {
