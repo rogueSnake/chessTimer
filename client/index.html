@@ -1,43 +1,37 @@
 <!doctype html>
-<html ng-app='app'>
+<html>
   <head>
     <meta charset=UTF-8>
     <title>chessTimer</title>
   </head>
-  <body>
-    <div id='whitePlayer'>
-      <div ng-controller="whiteCtrl">
-        <input type="button" value="WHITE"/>
-        {{whiteTime}}
-      </div>
+
+  <body id='body' ng-app='app'>
+
+    <div id='whitePlayer' ng-controller="whiteCtrl">
+      <input type="button" ng-click="startGame()" value="WHITE"/>
+      {{whiteTime}}
     </div>
 
-    <div id='timeConfiguration'>
-
-    <div ng-controller='mainCtrl'>
-
+    <div id='timeConfiguration' ng-controller='mainCtrl'>
       <div>
         <input type="button" ng-click="addHour()" value="+h"/>
         <input type="button" ng-click="addMinute()" value="+m"/>
         <input type="button" ng-click="addSecond()" value="+s"/>
       </div>
-
       {{menuTime}}
-
       <div>
         <input type="button" ng-click="removeHour()" value="-h"/>
         <input type="button" ng-click="removeMinute()" value="-m"/>
         <input type="button" ng-click="removeSecond()" value="-s"/>
       </div>
-    </div>  
     </div>
 
-    <div id='blackPlayer'>
-      <div ng-controller="blackCtrl">
-        {{blackTime}}
-        <input type="button" value="BLACK"/>
-      </div>
+    <div id='blackPlayer' ng-controller="blackCtrl">
+      {{blackTime}}
+      <input type="button" value="BLACK"/>
     </div>
+
   <script src="bundle.js"></script>
   </body>
 </html>
+

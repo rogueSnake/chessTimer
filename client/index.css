@@ -1,3 +1,7 @@
+#body {
+  background-color : #ffcc66;
+}
+
 #whitePlayer {
   display : inline-block;
   vertical-align : top;

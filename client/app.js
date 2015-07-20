@@ -49,13 +49,50 @@ var menuController = app.controller('mainCtrl', ['$scope', function ($scope) {
     menuTimer.subtractSeconds();
     $scope.updateTime();
   }; 
+
+  $scope.pause = function () {
+
+  };
+
+  $scope.reset = function () {
+
+  };
+
+  $scope.$on('startGame', function (event) {
+    console.log('Setting time!');
+    $scope.$broadcast('setTime', {
+      hours : menuTimer.countHours(),
+      minutes : menuTimer.countMinutes(),
+      seconds : menuTimer.countSeconds()
+    });
+  });
 }]);
 
 menuController.controller('whiteCtrl', ['$scope', function ($scope) {
   $scope.whiteTime = whiteTimer.getTime();
+
+  $scope.$on('setTime', function (event, time) {
+    whiteTimer.setTime(time.hours, time.minutes, time.seconds);
+  });
+
+  $scope.startGame = function () {
+    $scope.$emit('startGame');
+  };
+
+  $scope.endTurn = function () {
+    
+  };
 }]);
 
 menuController.controller('blackCtrl', ['$scope', function ($scope) {
   $scope.blackTime = blackTimer.getTime();
+
+  $scope.$on('setTime', function (event, time) {
+    blackTimer.setTime(time.hours, time.minutes, time.seconds);
+  });
+
+  $scope.endTurn = function () {
+    
+  };
 }]);
 
