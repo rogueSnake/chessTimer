@@ -1,4 +1,4 @@
-var appController = function ($scope) {
+var appController = function ($scope, appService) {
 
   $scope.$on('whiteStart', function (event) {
     $scope.$broadcast('startGame');

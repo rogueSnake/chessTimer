@@ -1,7 +1,7 @@
 var timerMaker = require('../services/timerMaker'),
   blackTimer = timerMaker.makeTimer();
 
-var blackController = function ($scope) {
+var blackController = function ($scope, blackService) {
   $scope.blackTime = blackTimer.getTime();
 
   $scope.updateTime = function () {

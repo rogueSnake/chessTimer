@@ -28372,25 +28372,51 @@ module.exports = angular;
 },{"./angular":1}],3:[function(require,module,exports){
 var css = require('./index.css'),
   angular = require('angular'),
-  mainControl = require('./controllers/main'),
+  appService = require('./services/app'),
+  menuService = require('./services/menu'),
+  whiteService = require('./services/white')
+  blackService = require('./services/black'),
+  appControl = require('./controllers/app'),
   menuControl = require('./controllers/menu'),
   whiteControl = require('./controllers/white'),
   blackControl = require('./controllers/black'),
   app = angular.module('app', []);
 
+app.service({
+  'appService' : appService,
+  'menuService' : menuService,
+  'whiteService' : whiteService,
+  'blackService' : blackService
+});
+
 app.controller({
-  'appCtrl' : mainControl,
-  'mainCtrl' : menuControl,
+  'appCtrl' : appControl,
+  'menuCtrl' : menuControl,
   'whiteCtrl' : whiteControl,
   'blackCtrl' : blackControl    
 });
 
 
-},{"./controllers/black":4,"./controllers/main":5,"./controllers/menu":6,"./controllers/white":7,"./index.css":8,"angular":2}],4:[function(require,module,exports){
+},{"./controllers/app":4,"./controllers/black":5,"./controllers/menu":6,"./controllers/white":7,"./index.css":8,"./services/app":9,"./services/black":10,"./services/menu":11,"./services/white":13,"angular":2}],4:[function(require,module,exports){
+var appController = function ($scope, appService) {
+
+  $scope.$on('whiteStart', function (event) {
+    $scope.$broadcast('startGame');
+  });
+
+  $scope.$on('setPlayerTime', function (event, time) {
+    $scope.$broadcast('setTime', time);
+  });
+};
+
+module.exports = appController;
+
+
+},{}],5:[function(require,module,exports){
 var timerMaker = require('../services/timerMaker'),
   blackTimer = timerMaker.makeTimer();
 
-var blackController = function ($scope) {
+var blackController = function ($scope, blackService) {
   $scope.blackTime = blackTimer.getTime();
 
   $scope.updateTime = function () {
@@ -28410,30 +28436,17 @@ var blackController = function ($scope) {
 module.exports = blackController;
 
 
-},{"../services/timerMaker":9}],5:[function(require,module,exports){
-var appController = function ($scope) {
-
-  $scope.$on('whiteStart', function (event) {
-    $scope.$broadcast('startGame');
-  });
-
-  $scope.$on('setPlayerTime', function (event, time) {
-    $scope.$broadcast('setTime', time);
-  });
-};
-
-module.exports = appController;
-
-
-},{}],6:[function(require,module,exports){
+},{"../services/timerMaker":12}],6:[function(require,module,exports){
 var timerMaker = require('../services/timerMaker'),
   menuTimer = timerMaker.makeTimer();
 
-var menuController = function ($scope) {
+var menuController = function ($scope, menuService) {
   $scope.startTimeMinutes = 5;
   $scope.startTimeHours = 0;
   $scope.message = $scope.startTime;
   $scope.menuTime = menuTimer.getTime();
+
+  console.log(menuService.getData());
 
   $scope.updateTime = function () {
     $scope.menuTime = menuTimer.getTime();
@@ -28491,11 +28504,11 @@ var menuController = function ($scope) {
 module.exports = menuController;
 
 
-},{"../services/timerMaker":9}],7:[function(require,module,exports){
+},{"../services/timerMaker":12}],7:[function(require,module,exports){
 var timerMaker = require('../services/timerMaker'),
   whiteTimer = timerMaker.makeTimer();
 
-var whiteController = function ($scope) {
+var whiteController = function ($scope, whiteService) {
   $scope.whiteTime = whiteTimer.getTime();
 
   $scope.updateTime = function () {
@@ -28519,9 +28532,46 @@ var whiteController = function ($scope) {
 module.exports = whiteController;
 
 
-},{"../services/timerMaker":9}],8:[function(require,module,exports){
+},{"../services/timerMaker":12}],8:[function(require,module,exports){
 var css = "#body {\n  background-color: #ffcc66;\n}\n#timeConfiguration {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 20%;\n  color: green;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#whitePlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#blackPlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
-},{"browserify-css":10}],9:[function(require,module,exports){
+},{"browserify-css":14}],9:[function(require,module,exports){
+var menuService = function () {
+  var data = 0;
+
+  this.getData = function () {
+    return data;
+  };
+};
+
+module.exports = menuService;
+
+
+},{}],10:[function(require,module,exports){
+arguments[4][9][0].apply(exports,arguments)
+},{"dup":9}],11:[function(require,module,exports){
+var timerMaker = require('./timerMaker'),
+  menuTimer = timerMaker.makeTimer();
+
+var menuService = function () {
+  var data = 0;
+
+  this.getTime = function () {
+
+  };
+
+  this.addHours = function () {
+
+  };
+
+  this.getData = function () {
+    return data;
+  };
+};
+
+module.exports = menuService;
+
+
+},{"./timerMaker":12}],12:[function(require,module,exports){
 var SECONDS_IN_A_MINUTE = 60,
   MINUTES_IN_AN_HOUR = SECONDS_IN_A_MINUTE,
   SECONDS_IN_AN_HOUR = SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR,
@@ -28615,7 +28665,9 @@ module.exports = {
 };
 
 
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
+arguments[4][9][0].apply(exports,arguments)
+},{"dup":9}],14:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 

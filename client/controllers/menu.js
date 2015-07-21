@@ -1,11 +1,13 @@
 var timerMaker = require('../services/timerMaker'),
   menuTimer = timerMaker.makeTimer();
 
-var menuController = function ($scope) {
+var menuController = function ($scope, menuService) {
   $scope.startTimeMinutes = 5;
   $scope.startTimeHours = 0;
   $scope.message = $scope.startTime;
   $scope.menuTime = menuTimer.getTime();
+
+  console.log(menuService.getData());
 
   $scope.updateTime = function () {
     $scope.menuTime = menuTimer.getTime();
