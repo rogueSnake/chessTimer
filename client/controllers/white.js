@@ -1,4 +1,4 @@
-var whiteController = function ($scope, whiteService) {
+app.controller('whiteCtrl', function ($scope, whiteService) {
   $scope.whiteTime = whiteService.getTime();
 
   $scope.updateTime = function () {
@@ -17,7 +17,5 @@ var whiteController = function ($scope, whiteService) {
   $scope.endTurn = function () {
     
   };
-};
-
-module.exports = whiteController;
+});
 

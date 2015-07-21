@@ -1,4 +1,4 @@
-var blackService = function (timerService) {
+app.service('blackService', function (timerService) {
   var blackTimer = timerService.makeTimer();
 
   this.setTime = function (hours, minutes, seconds) {
@@ -24,7 +24,5 @@ var blackService = function (timerService) {
   this.getTime = function () {
     return blackTimer.getTime();
   };
-};
-
-module.exports = blackService;
+});
 

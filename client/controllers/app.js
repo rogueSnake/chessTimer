@@ -1,4 +1,4 @@
-var appController = function ($scope, appService) {
+app.controller('appCtrl', function ($scope, appService) {
 
   $scope.$on('whiteStart', function (event) {
     $scope.$broadcast('startGame');
@@ -7,7 +7,5 @@ var appController = function ($scope, appService) {
   $scope.$on('setPlayerTime', function (event, time) {
     $scope.$broadcast('setTime', time);
   });
-};
-
-module.exports = appController;
+});
 

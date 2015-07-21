@@ -1,4 +1,4 @@
-var timerService = function () {
+app.service('timerService', function () {
   var SECONDS_IN_A_MINUTE = 60,
     MINUTES_IN_AN_HOUR = SECONDS_IN_A_MINUTE,
     SECONDS_IN_AN_HOUR = SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR,
@@ -86,7 +86,5 @@ var timerService = function () {
       }
     };
   };
-};
-
-module.exports = timerService;
+});
 

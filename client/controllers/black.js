@@ -1,4 +1,4 @@
-var blackController = function ($scope, blackService) {
+app.controller('blackCtrl', function ($scope, blackService) {
   $scope.blackTime = blackService.getTime();
 
   $scope.updateTime = function () {
@@ -13,7 +13,5 @@ var blackController = function ($scope, blackService) {
   $scope.endTurn = function () {
     
   };
-};
-
-module.exports = blackController;
+});
 

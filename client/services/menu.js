@@ -1,4 +1,4 @@
-var menuService = function (timerService) {
+app.service('menuService', function (timerService) {
   var menuTimer = timerService.makeTimer();
   
   this.addHour = function () {
@@ -40,7 +40,13 @@ var menuService = function (timerService) {
   this.getTime = function () {
     return menuTimer.getTime();
   };
-};
 
-module.exports = menuService;
+  this.pause = function () {
+    console.log("PAUSE");
+  };
+
+  this.reset = function () {
+    console.log("RESET");
+  };
+});
 

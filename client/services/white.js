@@ -1,4 +1,4 @@
-var whiteService = function (timerService) {
+app.service('whiteService', function (timerService) {
   var whiteTimer = timerService.makeTimer();
 
   this.setTime = function (hours, minutes, seconds) {
@@ -24,7 +24,5 @@ var whiteService = function (timerService) {
   this.getTime = function () {
     return whiteTimer.getTime();
   };
-};
-
-module.exports = whiteService;
+});
 

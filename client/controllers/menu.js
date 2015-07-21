@@ -1,4 +1,4 @@
-var menuController = function ($scope, menuService) {
+app.controller('menuCtrl', function ($scope, menuService) {
   $scope.menuTime = menuService.getTime();
 
   $scope.updateTime = function () {
@@ -36,11 +36,11 @@ var menuController = function ($scope, menuService) {
   }; 
 
   $scope.pause = function () {
-
+    menuService.pause();
   };
 
   $scope.reset = function () {
-
+    menuService.reset();
   };
 
   $scope.$on('startGame', function (event) {
@@ -50,7 +50,5 @@ var menuController = function ($scope, menuService) {
       seconds : menuService.countSeconds()
     });
   });
-};
-
-module.exports = menuController;
+});
 
