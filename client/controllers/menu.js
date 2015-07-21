@@ -1,47 +1,37 @@
-var timerMaker = require('../services/timerMaker'),
-  menuTimer = timerMaker.makeTimer();
-
 var menuController = function ($scope, menuService) {
-  $scope.startTimeMinutes = 5;
-  $scope.startTimeHours = 0;
-  $scope.message = $scope.startTime;
-  $scope.menuTime = menuTimer.getTime();
-
-  console.log(menuService.getData());
+  $scope.menuTime = menuService.getTime();
 
   $scope.updateTime = function () {
-    $scope.menuTime = menuTimer.getTime();
-    $scope.startTimeMinutes = menuTimer.countMinutes();
-    $scope.startTimeHours = menuTimer.countHours();
+    $scope.menuTime = menuService.getTime();
   };
 
   $scope.addHour = function () {
-    menuTimer.addHours(1);
+    menuService.addHour();
     $scope.updateTime();
   };
 
   $scope.addMinute = function () {
-    menuTimer.addMinutes(1);
+    menuService.addMinute();
     $scope.updateTime();
   };
 
   $scope.addSecond = function () {
-    menuTimer.addSeconds(1);
+    menuService.addSecond();
     $scope.updateTime();
   };
 
   $scope.removeHour = function () {
-    menuTimer.subtractHours(1);
+    menuService.subtractHour();
     $scope.updateTime();
   }; 
 
   $scope.removeMinute = function () {
-    menuTimer.subtractMinutes(1);
+    menuService.subtractMinute();
     $scope.updateTime();
   };
  
   $scope.removeSecond = function () {
-    menuTimer.subtractSeconds(1);
+    menuService.subtractSecond();
     $scope.updateTime();
   }; 
 
@@ -55,9 +45,9 @@ var menuController = function ($scope, menuService) {
 
   $scope.$on('startGame', function (event) {
     $scope.$emit('setPlayerTime', {
-      hours : menuTimer.countHours(),
-      minutes : menuTimer.countMinutes(),
-      seconds : menuTimer.countSeconds()
+      hours : menuService.countHours(),
+      minutes : menuService.countMinutes(),
+      seconds : menuService.countSeconds()
     });
   });
 };

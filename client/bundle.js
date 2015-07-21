@@ -28371,22 +28371,27 @@ module.exports = angular;
 
 },{"./angular":1}],3:[function(require,module,exports){
 var css = require('./index.css'),
-  angular = require('angular'),
+
   appService = require('./services/app'),
   menuService = require('./services/menu'),
   whiteService = require('./services/white')
   blackService = require('./services/black'),
+  timerService = require('./services/timerMaker'),
+
   appControl = require('./controllers/app'),
   menuControl = require('./controllers/menu'),
   whiteControl = require('./controllers/white'),
   blackControl = require('./controllers/black'),
+
+  angular = require('angular'),
   app = angular.module('app', []);
 
 app.service({
   'appService' : appService,
   'menuService' : menuService,
   'whiteService' : whiteService,
-  'blackService' : blackService
+  'blackService' : blackService,
+  'timerService' : timerService
 });
 
 app.controller({
@@ -28397,7 +28402,7 @@ app.controller({
 });
 
 
-},{"./controllers/app":4,"./controllers/black":5,"./controllers/menu":6,"./controllers/white":7,"./index.css":8,"./services/app":9,"./services/black":10,"./services/menu":11,"./services/white":13,"angular":2}],4:[function(require,module,exports){
+},{"./controllers/app":4,"./controllers/black":5,"./controllers/menu":6,"./controllers/white":7,"./index.css":8,"./services/app":9,"./services/black":10,"./services/menu":11,"./services/timerMaker":12,"./services/white":13,"angular":2}],4:[function(require,module,exports){
 var appController = function ($scope, appService) {
 
   $scope.$on('whiteStart', function (event) {
@@ -28413,18 +28418,15 @@ module.exports = appController;
 
 
 },{}],5:[function(require,module,exports){
-var timerMaker = require('../services/timerMaker'),
-  blackTimer = timerMaker.makeTimer();
-
 var blackController = function ($scope, blackService) {
-  $scope.blackTime = blackTimer.getTime();
+  $scope.blackTime = blackService.getTime();
 
   $scope.updateTime = function () {
-    $scope.blackTime = blackTimer.getTime();
+    $scope.blackTime = blackService.getTime();
   };
 
   $scope.$on('setTime', function (event, time) {
-    blackTimer.setTime(time.hours, time.minutes, time.seconds);
+    blackService.setTime(time.hours, time.minutes, time.seconds);
     $scope.updateTime();
   });
 
@@ -28436,51 +28438,41 @@ var blackController = function ($scope, blackService) {
 module.exports = blackController;
 
 
-},{"../services/timerMaker":12}],6:[function(require,module,exports){
-var timerMaker = require('../services/timerMaker'),
-  menuTimer = timerMaker.makeTimer();
-
+},{}],6:[function(require,module,exports){
 var menuController = function ($scope, menuService) {
-  $scope.startTimeMinutes = 5;
-  $scope.startTimeHours = 0;
-  $scope.message = $scope.startTime;
-  $scope.menuTime = menuTimer.getTime();
-
-  console.log(menuService.getData());
+  $scope.menuTime = menuService.getTime();
 
   $scope.updateTime = function () {
-    $scope.menuTime = menuTimer.getTime();
-    $scope.startTimeMinutes = menuTimer.countMinutes();
-    $scope.startTimeHours = menuTimer.countHours();
+    $scope.menuTime = menuService.getTime();
   };
 
   $scope.addHour = function () {
-    menuTimer.addHours(1);
+    menuService.addHour();
     $scope.updateTime();
   };
 
   $scope.addMinute = function () {
-    menuTimer.addMinutes(1);
+    menuService.addMinute();
     $scope.updateTime();
   };
 
   $scope.addSecond = function () {
-    menuTimer.addSeconds(1);
+    menuService.addSecond();
     $scope.updateTime();
   };
 
   $scope.removeHour = function () {
-    menuTimer.subtractHours(1);
+    menuService.subtractHour();
     $scope.updateTime();
   }; 
 
   $scope.removeMinute = function () {
-    menuTimer.subtractMinutes(1);
+    menuService.subtractMinute();
     $scope.updateTime();
   };
  
   $scope.removeSecond = function () {
-    menuTimer.subtractSeconds(1);
+    menuService.subtractSecond();
     $scope.updateTime();
   }; 
 
@@ -28494,9 +28486,9 @@ var menuController = function ($scope, menuService) {
 
   $scope.$on('startGame', function (event) {
     $scope.$emit('setPlayerTime', {
-      hours : menuTimer.countHours(),
-      minutes : menuTimer.countMinutes(),
-      seconds : menuTimer.countSeconds()
+      hours : menuService.countHours(),
+      minutes : menuService.countMinutes(),
+      seconds : menuService.countSeconds()
     });
   });
 };
@@ -28504,19 +28496,16 @@ var menuController = function ($scope, menuService) {
 module.exports = menuController;
 
 
-},{"../services/timerMaker":12}],7:[function(require,module,exports){
-var timerMaker = require('../services/timerMaker'),
-  whiteTimer = timerMaker.makeTimer();
-
+},{}],7:[function(require,module,exports){
 var whiteController = function ($scope, whiteService) {
-  $scope.whiteTime = whiteTimer.getTime();
+  $scope.whiteTime = whiteService.getTime();
 
   $scope.updateTime = function () {
-    $scope.whiteTime = whiteTimer.getTime();
+    $scope.whiteTime = whiteService.getTime();
   };
 
   $scope.$on('setTime', function (event, time) {
-    whiteTimer.setTime(time.hours, time.minutes, time.seconds);
+    whiteService.setTime(time.hours, time.minutes, time.seconds);
     $scope.updateTime();
   });
 
@@ -28532,7 +28521,7 @@ var whiteController = function ($scope, whiteService) {
 module.exports = whiteController;
 
 
-},{"../services/timerMaker":12}],8:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var css = "#body {\n  background-color: #ffcc66;\n}\n#timeConfiguration {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 20%;\n  color: green;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#whitePlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n#blackPlayer {\n  display: inline-block;\n  vertical-align: top;\n  font-size: 225%;\n  width: 25%;\n  border-style: double;\n  border-width: 5px;\n  border-color: blue;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
 },{"browserify-css":14}],9:[function(require,module,exports){
 var menuService = function () {
@@ -28547,127 +28536,212 @@ module.exports = menuService;
 
 
 },{}],10:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"dup":9}],11:[function(require,module,exports){
-var timerMaker = require('./timerMaker'),
-  menuTimer = timerMaker.makeTimer();
+var blackService = function (timerService) {
+  var blackTimer = timerService.makeTimer();
 
-var menuService = function () {
-  var data = 0;
+  this.setTime = function (hours, minutes, seconds) {
+    blackTimer.setTime(hours, minutes, seconds);
+  };
+
+  this.subtractSecond = function () {
+    blackTimer.subtractSeconds(1);
+  };
+
+  this.countHours = function () {
+    return blackTimer.countHours();
+  };
+
+  this.countMinutes = function () {
+    return blackTimer.countMinutes();
+  };
+
+  this.countSeconds = function () {
+    return blackTimer.countSeconds();
+  };
 
   this.getTime = function () {
+    return blackTimer.getTime();
+  };
+};
 
+module.exports = blackService;
+
+
+},{}],11:[function(require,module,exports){
+var menuService = function (timerService) {
+  var menuTimer = timerService.makeTimer();
+  
+  this.addHour = function () {
+    menuTimer.addHours(1);
   };
 
-  this.addHours = function () {
-
+  this.addMinute = function () {
+    menuTimer.addMinutes(1);
   };
 
-  this.getData = function () {
-    return data;
+  this.addSecond = function () {
+    menuTimer.addSeconds(1);
+  };
+
+  this.subtractHour = function () {
+    menuTimer.subtractHours(1);
+  };
+
+  this.subtractMinute = function () {
+    menuTimer.subtractMinutes(1);
+  };
+
+  this.subtractSecond = function () {
+    menuTimer.subtractSeconds(1);
+  };
+
+  this.countHours = function () {
+    return menuTimer.countHours();
+  };
+
+  this.countMinutes = function () {
+    return menuTimer.countMinutes();
+  };
+
+  this.countSeconds = function () {
+    return menuTimer.countSeconds();
+  };
+
+  this.getTime = function () {
+    return menuTimer.getTime();
   };
 };
 
 module.exports = menuService;
 
 
-},{"./timerMaker":12}],12:[function(require,module,exports){
-var SECONDS_IN_A_MINUTE = 60,
-  MINUTES_IN_AN_HOUR = SECONDS_IN_A_MINUTE,
-  SECONDS_IN_AN_HOUR = SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR,
-  LOWER_LIMIT = 0,
-  UPPER_LIMIT = (99 * SECONDS_IN_AN_HOUR) + (59 * SECONDS_IN_A_MINUTE) + 59;
+},{}],12:[function(require,module,exports){
+var timerService = function () {
+  var SECONDS_IN_A_MINUTE = 60,
+    MINUTES_IN_AN_HOUR = SECONDS_IN_A_MINUTE,
+    SECONDS_IN_AN_HOUR = SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR,
+    LOWER_LIMIT = 0,
+    UPPER_LIMIT = (99 * SECONDS_IN_AN_HOUR) + (59 * SECONDS_IN_A_MINUTE) + 59;
+  
+  var fillZero = function (number) {
 
-var fillZero = function (number) {
-
-  if (String(number).length < 2) {
-    number = "0" + number;
+    if (String(number).length < 2) {
+      number = "0" + number;
+    };
+    return String(number);
   };
-  return String(number);
-};
 
-var makeTimer = function () {
-  var absoluteSeconds = 0;
+  this.makeTimer = function () {
+    var absoluteSeconds = 0;
 
-  return {
+    return {
 
-    add : function (numberOfSeconds) {
-      absoluteSeconds += (numberOfSeconds);
+      add : function (numberOfSeconds) {
+        absoluteSeconds += (numberOfSeconds);
 
-      if (absoluteSeconds < LOWER_LIMIT) {
-        absoluteSeconds = LOWER_LIMIT;
+        if (absoluteSeconds < LOWER_LIMIT) {
+          absoluteSeconds = LOWER_LIMIT;
+        }
+
+        else if (absoluteSeconds > UPPER_LIMIT) {
+          absoluteSeconds = UPPER_LIMIT;
+        }
+      },
+
+      subtract : function (numberOfSeconds) {
+        this.add(-1 * (numberOfSeconds));
+      },
+
+      addSeconds : function (numberOfSeconds) {
+        this.add(numberOfSeconds);
+      },
+
+      addMinutes : function (numberOfMinutes) {
+        this.addSeconds((numberOfMinutes) * SECONDS_IN_A_MINUTE);
+      },
+
+      addHours : function (numberOfHours) {
+        this.addMinutes((numberOfHours) * MINUTES_IN_AN_HOUR);
+      },
+
+      subtractSeconds : function (numberOfSeconds) {
+        this.subtract(numberOfSeconds);
+      },
+
+      subtractMinutes : function (numberOfMinutes) {
+        this.subtractSeconds((numberOfMinutes) * SECONDS_IN_A_MINUTE);
+      },
+
+      subtractHours : function (numberOfHours) {
+        this.subtractMinutes((numberOfHours) * MINUTES_IN_AN_HOUR);
+      },
+
+      countSeconds : function () {
+        return absoluteSeconds - (this.countMinutes() * SECONDS_IN_A_MINUTE + 
+            this.countHours() * SECONDS_IN_AN_HOUR);
+      },
+
+      countMinutes : function () {
+        return Math.floor((absoluteSeconds - (this.countHours() * 
+            SECONDS_IN_AN_HOUR)) / SECONDS_IN_A_MINUTE);
+      },
+
+      countHours : function () {
+        return Math.floor(absoluteSeconds / SECONDS_IN_AN_HOUR);
+      },
+
+      getTime : function () {
+        return fillZero(this.countHours()) + "h " + 
+            fillZero(this.countMinutes()) + "m " + 
+            fillZero(this.countSeconds()) + "s";
+      },
+
+      setTime : function (hours, minutes, seconds) {
+        absoluteSeconds = 0;
+        this.addHours(hours);
+        this.addMinutes(minutes);
+        this.addSeconds(seconds);
       }
-
-      else if (absoluteSeconds > UPPER_LIMIT) {
-        absoluteSeconds = UPPER_LIMIT;
-      }
-    },
-
-    subtract : function (numberOfSeconds) {
-      this.add(-1 * (numberOfSeconds));
-    },
-
-    addSeconds : function (numberOfSeconds) {
-      this.add(numberOfSeconds);
-    },
-
-    addMinutes : function (numberOfMinutes) {
-      this.addSeconds((numberOfMinutes) * SECONDS_IN_A_MINUTE);
-    },
-
-    addHours : function (numberOfHours) {
-      this.addMinutes((numberOfHours) * MINUTES_IN_AN_HOUR);
-    },
-
-    subtractSeconds : function (numberOfSeconds) {
-      this.subtract(numberOfSeconds);
-    },
-
-    subtractMinutes : function (numberOfMinutes) {
-      this.subtractSeconds((numberOfMinutes) * SECONDS_IN_A_MINUTE);
-    },
-
-    subtractHours : function (numberOfHours) {
-      this.subtractMinutes((numberOfHours) * MINUTES_IN_AN_HOUR);
-    },
-
-    countSeconds : function () {
-      return absoluteSeconds - (this.countMinutes() * SECONDS_IN_A_MINUTE + 
-          this.countHours() * SECONDS_IN_AN_HOUR);
-    },
-
-    countMinutes : function () {
-      return Math.floor((absoluteSeconds - (this.countHours() * 
-          SECONDS_IN_AN_HOUR)) / SECONDS_IN_A_MINUTE);
-    },
-
-    countHours : function () {
-      return Math.floor(absoluteSeconds / SECONDS_IN_AN_HOUR);
-    },
-
-    getTime : function () {
-      return fillZero(this.countHours()) + "h " + 
-          fillZero(this.countMinutes()) + "m " + 
-          fillZero(this.countSeconds()) + "s";
-    },
-
-    setTime : function (hours, minutes, seconds) {
-      absoluteSeconds = 0;
-      this.addHours(hours);
-      this.addMinutes(minutes);
-      this.addSeconds(seconds);
-    }
+    };
   };
 };
 
-module.exports = {
-    makeTimer : makeTimer
-};
+module.exports = timerService;
 
 
 },{}],13:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"dup":9}],14:[function(require,module,exports){
+var whiteService = function (timerService) {
+  var whiteTimer = timerService.makeTimer();
+
+  this.setTime = function (hours, minutes, seconds) {
+    whiteTimer.setTime(hours, minutes, seconds);
+  };
+
+  this.subtractSecond = function () {
+    whiteTimer.subtractSeconds(1);
+  };
+
+  this.countHours = function () {
+    return whiteTimer.countHours();
+  };
+
+  this.countMinutes = function () {
+    return whiteTimer.countMinutes();
+  };
+
+  this.countSeconds = function () {
+    return whiteTimer.countSeconds();
+  };
+
+  this.getTime = function () {
+    return whiteTimer.getTime();
+  };
+};
+
+module.exports = whiteService;
+
+
+},{}],14:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
