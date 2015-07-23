@@ -6,6 +6,36 @@
   border-color : #681b84;
 }
 
+#button {
+  color : #681b84;
+  background-color : #b7ea69;
+  border-radius : 25px;
+}
+
+#whiteButton {
+  color : #681b84;
+  background-color : #b7ea69;
+  border-radius : 15px 50px;
+}
+
+#blackButton {
+  color : #681b84;
+  background-color : #b7ea69;
+  border-radius : 50px 15px;
+}
+
+#pauseButton {
+  color : #681b84;
+  background-color : #b7ea69;
+  border-radius : 15px 50px;
+}
+
+#resetButton {
+  color : #681b84;
+  background-color : #b7ea69;
+  border-radius : 50px 15px;
+}
+
 #timeConfiguration {
   font-size : 225%;
   flex : 1;
