@@ -1,12 +1,12 @@
 #body {
+  display : flex;
+  flex-flow : row wrap;
   background-color : #ffcc66;
 }
 
 #timeConfiguration {
-  display : inline-block;
-  vertical-align : top;
   font-size : 225%;
-  width : 20%;
+  flex : 1;
   color : green;
   border-style : double;
   border-width : 5px;
@@ -14,22 +14,22 @@
 }
 
 #whitePlayer {
-  display : inline-block;
-  vertical-align : top;
   font-size : 225%;
-  width : 25%;
+  flex : 0 1 320px; 
   border-style : double;
   border-width : 5px;
   border-color : blue;
 }
 
 #blackPlayer {
-  display : inline-block;
-  vertical-align : top;
   font-size : 225%;
-  width : 25%;
+  flex : 0 1 320px; 
   border-style : double;
   border-width : 5px;
   border-color : blue;
+}
+
+#appMessage {
+  flex : 0 1 100%
 }
 
