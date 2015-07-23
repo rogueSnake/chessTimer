@@ -1,5 +1,5 @@
-app.service('whiteService', function (timerService) {
-  var whiteTimer = timerService.makeTimer();
+app.service('whiteService', function (timerMaker, turnManager) {
+  var whiteTimer = timerMaker.makeTimer();
 
   this.setTime = function (hours, minutes, seconds) {
     whiteTimer.setTime(hours, minutes, seconds);

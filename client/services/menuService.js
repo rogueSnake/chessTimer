@@ -1,6 +1,9 @@
-app.service('menuService', function (timerService) {
-  var menuTimer = timerService.makeTimer();
-  
+app.service('menuService', function (timerMaker, turnManager) {
+  var menuTimer = timerMaker.makeTimer();
+
+  // Start clock at five minutes.
+  menuTimer.addMinutes(5);
+ 
   this.addHour = function () {
     menuTimer.addHours(1);
   };

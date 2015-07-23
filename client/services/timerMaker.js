@@ -1,4 +1,4 @@
-app.service('timerService', function () {
+app.service('timerMaker', function () {
   var SECONDS_IN_A_MINUTE = 60,
     MINUTES_IN_AN_HOUR = SECONDS_IN_A_MINUTE,
     SECONDS_IN_AN_HOUR = SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR,

@@ -9,46 +9,51 @@
   <body id='body' ng-app='app' ng-controller='appCtrl'>
 
     <div id='whitePlayer' ng-controller="whiteCtrl">
-      <input type="button" ng-click="startGame()" value="WHITE"/>
+      <input type="button" ng-click="clickButton()" ng-disabled="buttonDisabled" value="WHITE"/>
       {{whiteTime}}
     </div>
 
     <div id='timeConfiguration' ng-controller='menuCtrl'>
       <div>
-        <input type="button" ng-click="addHour()" value="+h"/>
-        <input type="button" ng-click="addMinute()" value="+m"/>
-        <input type="button" ng-click="addSecond()" value="+s"/>
+        <input type="button" ng-click="addHour()" ng-disabled="addHourDisabled" value="+h"/>
+        <input type="button" ng-click="addMinute()" ng-disabled="addMinuteDisabled" value="+m"/>
+        <input type="button" ng-click="addSecond()" ng-disabled="addSecondDisabled" value="+s"/>
       </div>
       {{menuTime}}
       <div>
-        <input type="button" ng-click="removeHour()" value="-h"/>
-        <input type="button" ng-click="removeMinute()" value="-m"/>
-        <input type="button" ng-click="removeSecond()" value="-s"/>
+        <input type="button" ng-click="removeHour()" ng-disabled="removeHourDisabled" value="-h"/>
+        <input type="button" ng-click="removeMinute()" ng-disabled="removeMinuteDisabled" value="-m"/>
+        <input type="button" ng-click="removeSecond()" ng-disabled="removeSecondDisabled" value="-s"/>
       </div>
       <div>
-        <input type="button" ng-click="pause()" value="Pause"/>
-        <input type="button" ng-click="reset()" value="Reset"/>       
+        <input type="button" ng-click="pause()" ng-disabled="pauseDisabled" value="Pause"/>
+        <input type="button" ng-click="reset()" ng-disabled="pauseDisabled" value="Reset"/>       
       </div>
     </div>
 
     <div id='blackPlayer' ng-controller="blackCtrl">
       {{blackTime}}
-      <input type="button" value="BLACK"/>
+      <input type="button" ng-click="endTurn()" ng-disabled="buttonDisabled" value="BLACK"/>
     </div>
+
+    <br>{{appMessage}}
 
   <script src="angular.js"></script>
   <script src="app.js"></script>
 
-  <script src="services/app.js"></script>
   <script src="services/timerMaker.js"></script>
-  <script src="services/menu.js"></script>
-  <script src="services/white.js"></script>
-  <script src="services/black.js"></script>
+  <script src="services/turnManager.js"></script>
 
-  <script src="controllers/menu.js"></script>
-  <script src="controllers/white.js"></script>
-  <script src="controllers/black.js"></script>
-  <script src="controllers/app.js"></script>
+  <script src="services/appService.js"></script>
+  <script src="services/menuService.js"></script>
+  <script src="services/whiteService.js"></script>
+  <script src="services/blackService.js"></script>
+
+  <script src="controllers/appController.js"></script>
+  <script src="controllers/menuController.js"></script>
+  <script src="controllers/whiteController.js"></script>
+  <script src="controllers/blackController.js"></script>
+
   </body>
 </html>
 
