@@ -9,31 +9,56 @@
   <body id='body' ng-app='app' ng-controller='appCtrl'>
 
     <div id='whitePlayer' ng-controller="whiteCtrl">
-      <input type="button" id="whiteButton" ng-click="clickButton()" ng-disabled="buttonDisabled" value="WHITE"/>
+
+      <input type="button" id="whiteButton" ng-click="clickButton()" 
+          ng-disabled="buttonDisabled" value="WHITE"/>
+
       {{whiteTime}}
     </div>
 
     <div id='timeConfiguration' ng-controller='menuCtrl'>
       <div>
-        <input type="button" id="button" ng-click="addHour()" ng-disabled="addHourDisabled" value="+h"/>
-        <input type="button" id="button" ng-click="addMinute()" ng-disabled="addMinuteDisabled" value="+m"/>
-        <input type="button" id="button" ng-click="addSecond()" ng-disabled="addSecondDisabled" value="+s"/>
+
+        <input type="button" id="button" ng-click="addHour()" 
+            ng-disabled="addHourDisabled" value="+h"/>
+
+        <input type="button" id="button" ng-click="addMinute()" 
+            ng-disabled="addMinuteDisabled" value="+m"/>
+
+        <input type="button" id="button" ng-click="addSecond()" 
+            ng-disabled="addSecondDisabled" value="+s"/>
+
       </div>
       {{menuTime}}
       <div>
-        <input type="button" id="button" ng-click="removeHour()" ng-disabled="removeHourDisabled" value="-h"/>
-        <input type="button" id="button" ng-click="removeMinute()" ng-disabled="removeMinuteDisabled" value="-m"/>
-        <input type="button" id="button" ng-click="removeSecond()" ng-disabled="removeSecondDisabled" value="-s"/>
+
+        <input type="button" id="button" ng-click="removeHour()" 
+            ng-disabled="removeHourDisabled" value="-h"/>
+
+        <input type="button" id="button" ng-click="removeMinute()" 
+            ng-disabled="removeMinuteDisabled" value="-m"/>
+
+        <input type="button" id="button" ng-click="removeSecond()" 
+            ng-disabled="removeSecondDisabled" value="-s"/>
+
       </div>
       <div>
-        <input type="button" id="pauseButton" ng-click="pause()" ng-disabled="pauseDisabled" value="Pause"/>
-        <input type="button" id="resetButton" ng-click="reset()" ng-disabled="pauseDisabled" value="Reset"/>       
+
+        <input type="button" id="pauseButton" ng-click="pause()" 
+            ng-disabled="pauseDisabled" value="Pause"/>
+
+        <input type="button" id="resetButton" ng-click="reset()" 
+            ng-disabled="pauseDisabled" value="Reset"/>       
+
       </div>
     </div>
 
     <div id='blackPlayer' ng-controller="blackCtrl">
       {{blackTime}}
-      <input type="button" id="blackButton" ng-click="endTurn()" ng-disabled="buttonDisabled" value="BLACK"/>
+
+      <input type="button" id="blackButton" ng-click="endTurn()" 
+          ng-disabled="buttonDisabled" value="BLACK"/>
+
     </div>
 
     <div id="appMessage">
