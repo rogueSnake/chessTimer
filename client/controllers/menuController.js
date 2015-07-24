@@ -57,6 +57,12 @@ app.controller('menuCtrl', function ($scope, menuService) {
       minutes : menuService.countMinutes(),
       seconds : menuService.countSeconds()
     });
+    $scope.addHourDisabled = true;
+    $scope.addMinuteDisabled = true;
+    $scope.addSecondDisabled = true;
+    $scope.removeHourDisabled = true;
+    $scope.removeMinuteDisabled = true;
+    $scope.removeSecondDisabled = true;
   });
 });
 
