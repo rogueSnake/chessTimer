@@ -1,16 +1,14 @@
 app.controller('menuCtrl', function ($scope, menuService) {
 
   $scope.updateTime = function () {
-    var time = menuService.getTime();
+    $scope.addHourDisabled = !menuService.canAddHour();
+    $scope.addMinuteDisabled = !menuService.canAddMinute();
+    $scope.addSecondDisabled = !menuService.canAddSecond();
+    $scope.removeHourDisabled = !menuService.canSubtractHour();
+    $scope.removeMinuteDisabled = !menuService.canSubtractMinute();
+    $scope.removeSecondDisabled = !menuService.canSubtractSecond();
 
-    $scope.addHourDisabled = (time > "99h 00m 00s");
-    $scope.addMinuteDisabled = (time > "99h 59m 00s");
-    $scope.addSecondDisabled = (time > "99h 59m 58s");
-    $scope.removeHourDisabled = (time < "01h 00m 00s");
-    $scope.removeMinuteDisabled = (time < "00h 01m 00s");
-    $scope.removeSecondDisabled = (time < "00h 00m 01s");
-
-    $scope.menuTime = time;
+    $scope.menuTime = menuService.getTime();;
   };
 
   $scope.updateTime();

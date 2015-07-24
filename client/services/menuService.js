@@ -4,6 +4,30 @@ app.service('menuService', function (timerMaker, turnManager) {
   // Start clock at five minutes.
   menuTimer.addMinutes(5);
  
+  this.canAddHour = function () {
+    return (menuTimer.getTime() < "99h 00m 00s");
+  };
+
+  this.canAddMinute = function () {
+    return (menuTimer.getTime() < "99h 59m 00s");
+  };
+
+  this.canAddSecond = function () {
+    return (menuTimer.getTime() < "99h 59m 59s");
+  };
+
+  this.canSubtractHour = function () {
+    return (menuTimer.getTime() > "00h 59m 59s");
+  };
+
+  this.canSubtractMinute = function () {
+    return (menuTimer.getTime() > "00h 00m 59s");
+  };
+
+  this.canSubtractSecond = function () {
+    return (menuTimer.getTime() > "00h 00m 00s");
+  };
+
   this.addHour = function () {
     menuTimer.addHours(1);
   };
