@@ -20,12 +20,13 @@ app.controller('blackCtrl', function ($scope, blackService) {
   };
 
   $scope.$on('countDown', function (event, player) {
+
     if (player === 'black') {
       blackService.subtractSecond();
       $scope.updateTime();
       $scope.$apply();
 
-      if (blackService.getTime() === "00h 00m 00s") {
+      if (!blackService.canSubtractSecond()) {
         $scope.$emit('lose', 'black');
       }
     }

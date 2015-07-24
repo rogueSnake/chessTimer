@@ -5,6 +5,10 @@ app.service('blackService', function (timerMaker, turnManager) {
     blackTimer.setTime(hours, minutes, seconds);
   };
 
+  this.canSubtractSecond = function () {
+    return (blackTimer.getTime() > "00h 00m 00s");
+  };
+
   this.subtractSecond = function () {
     blackTimer.subtractSeconds(1);
   };

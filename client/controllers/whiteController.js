@@ -33,7 +33,7 @@ app.controller('whiteCtrl', function ($scope, whiteService) {
       $scope.updateTime();
       $scope.$apply();
 
-      if (whiteService.getTime() === "00h 00m 00s") {
+      if (!whiteService.canSubtractSecond()) {
         $scope.$emit('lose', 'white');
       }
     }
