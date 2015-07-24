@@ -57,7 +57,7 @@
   text-align : center;
 }
 
-#button {
+input {
   color : #681b84;
   background-color : #b7ea69;
   border-radius : 25px;
@@ -65,23 +65,15 @@
 
 #whiteButton,
 #pauseButton {
-  color : #681b84;
-  background-color : #b7ea69;
   border-radius : 15px 50px;
 }
 
 #blackButton,
 #resetButton {
-  color : #681b84;
-  background-color : #b7ea69;
   border-radius : 50px 15px;
 }
 
-#button:disabled,
-#whiteButton:disabled,
-#pauseButton:disabled,
-#blackButton:disabled,
-#resetBUtton:disabled {
+input:disabled {
   color : #555200;
   background-color : #d4d16a;
 }
